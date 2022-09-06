@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: Fair API
+  description: |-
+    Routes for fair API
+  contact:
+    email: jspsph@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+paths:
+  /health:
+    get:
+      description: Checks if server is up
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+  /fair:
+    post:
+      description: Creates new fair
+      operationId: createFair
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fair'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: One or more fields is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    put:
+      description: Updates a fair
+      operationId: updateFair
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Fair'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: One or more fields is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    get:
+      description: Obtains a fair
+      operationId: getFair
+      parameters:
+        - in: query
+          name: register
+          schema:
+            type: integer
+          description: The fair register field
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fair'
+        '400':
+          description: One or more fields is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      description: Deletes a fair
+      operationId: deleteFair
+      parameters:
+        - in: query
+          name: register
+          schema:
+            type: integer
+          description: The fair register field
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: One or more fields is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+  /fairs:
+    get:
+      description: Obtains a list of fairs
+      operationId: getFairs
+      parameters:
+        - in: query
+          name: districtName
+          schema:
+            type: string
+          description: The district name
+        - in: query
+          name: region5
+          schema:
+            type: string
+          description: The region5 name
+        - in: query
+          name: fairName
+          schema:
+            type: string
+          description: The fair name
+        - in: query
+          name: neighborhood
+          schema:
+            type: string
+          description: The neighborhood name
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fairs'
+        '400':
+          description: One or more fields is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+components:
+  schemas:
+    Fairs:
+      type: array
+      items:
+        $ref: '#/components/schemas/Fair'
+    Fair:
+      required:
+        - externalId
+        - setcens
+        - fairName
+        - register
+        - districtCode
+        - codeSubprefecture
+        - subprefecture
+        - areap
+        - districtName
+        - region5
+        - region8
+        - street
+        - neighborhood
+        - latitude
+        - longitude
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        externalId:
+          type: integer
+          format: int64
+          example: 1
+        setcens:
+          type: integer
+          format: int64
+          example: 10
+        fairName:
+          type: string
+          description: Fair name
+          example: Feira 123
+        register:
+          type: string
+          description: Fair register
+          example: 123-1
+        codeDistrict:
+          type: integer
+          format: int64
+          example: 10
+        codeSubprefecture:
+          type: integer
+          format: int64
+          example: 100
+        subprefecture:
+          type: string
+          description: Subprefecture name
+          example: Centro
+        areap:
+          type: integer
+          format: int64
+          example: 1000
+        districtName:
+          type: string
+          description: District name
+          example: Centro
+        region5:
+          type: string
+          description: Region 05
+          example: Leste
+        region8:
+          type: string
+          description: Region 08
+          example: Centro 2
+        street:
+          type: string
+          example: Rua Aibi
+        number:
+          type: string
+          example: 123a
+        neighborhood:
+          type: string
+          example: Jardim Florido
+        reference:
+          type: string
+          example: Em frente ao poste
+        latitude:
+          type: integer
+          format: int64
+          example: -23558733
+        longitude:
+          type: integer
+          format: int64
+          example: -46550164
+    Response:
+      type: object
+      properties:
+        error: 
+          type: string
+          example: Some error msg
+        success:
+          type: string
+          example: Some success msg
