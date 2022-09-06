@@ -51,11 +51,12 @@ func configureAPI(api *operations.FairapiAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 	api.TxtProducer = runtime.TextProducer()
 
-	if api.GetHealthHandler == nil {
-		api.GetHealthHandler = operations.GetHealthHandlerFunc(func(params operations.GetHealthParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetHealth has not yet been implemented")
-		})
-	}
+	api.GetHealthHandler = operations.GetHealthHandlerFunc(func(params operations.GetHealthParams) middleware.Responder {
+		ok := operations.NewGetHealthOK()
+		ok.Payload = "OK"
+		return ok
+	})
+
 	if api.CreateFairHandler == nil {
 		api.CreateFairHandler = operations.CreateFairHandlerFunc(func(params operations.CreateFairParams) middleware.Responder {
 			return middleware.NotImplemented("operation operations.CreateFair has not yet been implemented")
