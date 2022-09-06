@@ -1,0 +1,1 @@
+swagger generate server -A fairapi -f ../api/fair/fair.yml -t ../
