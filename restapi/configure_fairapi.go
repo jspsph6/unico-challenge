@@ -4,13 +4,17 @@ package restapi
 
 import (
 	"crypto/tls"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
 	"unico-challenge/restapi/operations"
+
+	"github.com/sirupsen/logrus"
 )
 
 //go:generate swagger generate server --target ../../unico-challenge --name Fairapi --spec ../api/fair/fair.yml --principal interface{}
@@ -25,9 +29,18 @@ func configureAPI(api *operations.FairapiAPI) http.Handler {
 
 	// Set your custom logger if needed. Default one is log.Printf
 	// Expected interface func(string, ...interface{})
-	//
-	// Example:
-	// api.Logger = log.Printf
+
+	logger := logrus.New()
+	logger.Formatter = &logrus.JSONFormatter{}
+	logger.Out = os.Stdout
+	file, err := os.OpenFile("../../log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err == nil {
+		logger.Out = file
+	} else {
+		logger.Info("Failed to log to file, using default stderr")
+	}
+	log.SetOutput(logger.Writer())
+	api.Logger = log.Printf
 
 	api.UseSwaggerUI()
 	// To continue using redoc as your UI, uncomment the following line
