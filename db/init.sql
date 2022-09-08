@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS fair (
     number varchar(255) null,
     neighborhood varchar(255) not null,
     reference varchar(255) null,
-    coordinates point not null,
+    latitude int not null,
+    longitude int not null,
     PRIMARY KEY (id)
 );
 
