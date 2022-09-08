@@ -30,6 +30,8 @@ func configureAPI(api *operations.FairapiAPI) http.Handler {
 	// Set your custom logger if needed. Default one is log.Printf
 	// Expected interface func(string, ...interface{})
 
+	// Setted logrus to structure logs and added output to file log.txt
+
 	logger := logrus.New()
 	logger.Formatter = &logrus.JSONFormatter{}
 	logger.Out = os.Stdout
